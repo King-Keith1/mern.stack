@@ -7,6 +7,7 @@ import MoviesList from "./components/movies-list";
 import Movie from "./components/movie";
 import Login from "./components/login";
 import {Nav, Navbar} from 'react-bootstrap';
+import Contact from "./contact-page";
 
 
 function App() {
@@ -32,6 +33,9 @@ function App() {
             <Nav.Link>
               {user ? (<button onClick={logout}>Logout User</button>) : (<Link to={"/login"}>Login</Link>)}
             </Nav.Link>
+            <Nav.Link>
+              <Link to={"/contact-page"}>Contact</Link>
+            </Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Navbar>
@@ -55,6 +59,8 @@ function App() {
           <Login {...props} login={login} />
         }>
         </Route>
+        {/* contact page */}
+        <Route path="/contact-page" render={(props) => <Contact {...props} />} />
       </Switch>
 
     </div>
