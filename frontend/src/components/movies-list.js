@@ -128,7 +128,6 @@ const MoviesList = props => {
       setCurrentSearchMode("");
       setCurrentPage(0);
       retrieveMovies();
-      setSearchRating("All Ratings");
    };
 
 
