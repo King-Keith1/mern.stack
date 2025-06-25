@@ -124,10 +124,11 @@ const MoviesList = props => {
 
    const clear = () => {
       setSearchTitle(""); 
-      setSearchRating("All Ratings");
+      setSearchRating("");
       setCurrentSearchMode("");
       setCurrentPage(0);
       retrieveMovies();
+      setSearchRating("All Ratings");
    };
 
 
