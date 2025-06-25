@@ -128,6 +128,8 @@ const MoviesList = props => {
       setCurrentSearchMode("");
       setCurrentPage(0);
       retrieveMovies();
+      retrieveRatings();
+      setRatings(["All Ratings"]);
    };
 
 
