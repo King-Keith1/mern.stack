@@ -122,6 +122,15 @@ const MoviesList = props => {
       }
    }
 
+   const clear = () => {
+      setSearchTitle(""); 
+      setSearchRating("All Ratings");
+      setCurrentSearchMode("");
+      setCurrentPage(0);
+      retrieveMovies();
+   };
+
+
    return (
       <div className="App">
          <Container>
@@ -160,6 +169,15 @@ const MoviesList = props => {
                         onClick={findByRating}
                      >
                         Search
+                     </Button>
+                  </Col>
+                  <Col className="d-flex align-items-end">
+                     <Button
+                        variant="danger"
+                        type="button"
+                        onClick={clear}
+                     >
+                        Clear
                      </Button>
                   </Col>
                </Row>
