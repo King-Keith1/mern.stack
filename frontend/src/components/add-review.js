@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import MovieDataService from '../services/movies';
 import { Link } from 'react-router-dom';
 import { Form, Button } from 'react-bootstrap';
-import GreetingBanner from 'GreetingBanner';
+import GreetingBanner from '.GreetingBanner';
 
 
 //This is a functional component that receives props
