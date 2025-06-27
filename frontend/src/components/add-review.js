@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import MovieDataService from '../services/movies';
 import { Link } from 'react-router-dom';
 import { Form, Button } from 'react-bootstrap';
-import GreetingBanner from GreetingBanner;
+import GreetingBanner from 'GreetingBanner';
 
 
 //This is a functional component that receives props
@@ -62,7 +62,7 @@ const AddReview = props => {
       }
    }
 
-
+   
    return (
       <div>
          {/* uses a ternary operator */}
@@ -70,7 +70,7 @@ const AddReview = props => {
             <div>
                <h4>Review submitted successfully</h4>
                <Link to={'/movies/' + props.match.params.id}>
-                  Back to Movie
+                 <GreetingBanner user={props.user} /> Back to Movie
                </Link>
             </div>
          ) : (
