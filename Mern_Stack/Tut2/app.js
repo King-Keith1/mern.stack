@@ -34,7 +34,7 @@ app.use(
 
 mongoose
   .connect(
-    `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@cluster1.5viagc5.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority`,
+    `mongodb+srv://keith4321ben:yXEki8PBfLdlEchy@cluster0.jblgkzt.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`,
     {
       useNewUrlParser: true,
       useUnifiedTopology: true,
