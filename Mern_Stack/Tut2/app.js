@@ -1,3 +1,5 @@
+require('dotenv').config();  // ⬅ Load env FIRST
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const graphqlHttp = require('express-graphql');
@@ -6,6 +8,8 @@ const mongoose = require('mongoose');
 const graphQlSchema = require('./graphql/schema/index');
 const graphQlResolvers = require('./graphql/resolvers/index');
 const isAuth = require('./middleware/is-auth');
+
+mongoose.set('strictQuery', true);
 
 const app = express();
 
@@ -32,14 +36,12 @@ app.use(
   })
 );
 
+// ✅ Only ONE connect here — using env variable
 mongoose
-  .connect(
-    `mongodb+srv://keith4321ben:yXEki8PBfLdlEchy@cluster0.jblgkzt.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`,
-    {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    }
-  )
+  .connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => {
     app.listen(8000, () => {
       console.log("Server is running on port 8000");
@@ -48,7 +50,3 @@ mongoose
   .catch(err => {
     console.error("MongoDB connection error:", err);
   });
-
-require('dotenv').config();
-mongoose.connect(process.env.MONGO_URI);
-
