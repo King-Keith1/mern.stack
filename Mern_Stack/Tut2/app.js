@@ -36,7 +36,7 @@ app.use(
   })
 );
 
-// ✅ Only ONE connect here — using env variable
+
 mongoose
   .connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
