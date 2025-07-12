@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mouse Trainer</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="auth">
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="register()">Register</button>
+    <button onclick="login()">Login</button>
+  </div>
+
+  <div id="game" style="display:none;">
+    <h3 id="message">Press WASD to move</h3>
+    <div id="arena">
+      <div id="mouse"></div>
+    </div>
+    <p id="info"></p>
+    <button onclick="startGame('easy')">Easy</button>
+    <button onclick="startGame('medium')">Medium</button>
+    <button onclick="startGame('hard')">Hard</button>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>
