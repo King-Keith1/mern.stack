@@ -7,4 +7,14 @@ router.post('/', async (req, res) => {
   res.json(saved);
 });
 
+// Get top scores
+router.get('/:difficulty', async (req, res) => {
+  const scores = await Score.find({ difficulty: req.params.difficulty })
+    .sort({ score: -1 })
+    .limit(10); // Top 10
+
+  res.json(scores);
+});
+
+
 module.exports = router;
