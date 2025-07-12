@@ -1,0 +1,16 @@
+#arena {
+  width: 400px;
+  height: 400px;
+  border: 2px solid black;
+  position: relative;
+  background-color: lightgray;
+}
+
+#mouse {
+  width: 30px;
+  height: 30px;
+  background: brown;
+  position: absolute;
+  top: 180px;
+  left: 180px;
+}
