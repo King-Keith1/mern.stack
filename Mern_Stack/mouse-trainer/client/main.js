@@ -81,3 +81,18 @@ function moveMouse() {
 function alertMsg(res) {
   alert('Done. You can log in now.');
 }
+
+function loadLeaderboard() {
+  const diff = document.getElementById('boardDiff').value;
+  fetch(`http://localhost:3000/api/score/${diff}`)
+    .then(res => res.json())
+    .then(data => {
+      const list = document.getElementById('leaderboard');
+      list.innerHTML = '';
+      data.forEach((entry, i) => {
+        const item = document.createElement('li');
+        item.textContent = `#${i + 1} ${entry.username} — ${entry.score} pts`;
+        list.appendChild(item);
+      });
+    });
+}
