@@ -4,6 +4,7 @@ import React from 'react';
 import {Routes, Route} from 'react-router-dom';
 import { Signup, Login } from './pages';
 import Home from './pages/Home';
+import './index.css';
 
 function App() {
   return (
