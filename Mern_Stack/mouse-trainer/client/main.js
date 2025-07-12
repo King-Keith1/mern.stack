@@ -13,7 +13,13 @@ function register() {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, password })
-  }).then(res => res.json()).then(alertMsg);
+  })
+  .then(res => res.json())
+  .then(data => {
+    console.log('Register Response:', data); // 🧪 NEW
+    alert('Registered. Now log in!');
+  })
+  .catch(err => console.error('Register Error:', err));
 }
 
 function login() {
@@ -21,14 +27,22 @@ function login() {
   const password = document.getElementById('password').value;
 
   fetch('http://localhost:3000/api/auth/login', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username, password })
-  }).then(res => res.json()).then(data => {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ username, password })
+})
+.then(async res => {
+  const data = await res.json();
+  console.log('Login Response:', data); // 🧪 NEW
+  if (res.ok) {
     token = data.token;
     document.getElementById('auth').style.display = 'none';
     document.getElementById('game').style.display = 'block';
-  });
+  } else {
+    alert(data.msg || 'Login failed');
+  }
+})
+.catch(err => console.error('Login Error:', err));
 }
 
 function startGame(diff) {
