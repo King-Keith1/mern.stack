@@ -76,6 +76,12 @@ function startGame(diff) {
   }, 1000);
 }
 
+const mouse = document.getElementById('mouse');
+const arena = document.getElementById('arena');
+
+const mouseSize = 30;
+const step = 10;
+
 document.addEventListener('keydown', e => {
   const key = e.key?.toLowerCase?.();
   if (!key) return;
@@ -97,6 +103,26 @@ document.addEventListener('keydown', e => {
     case 'control': msg.innerText = 'Crouched!'; break;
     default: return;
   }
+
+  const arenaRect = arena.getBoundingClientRect();
+  const arenaWidth = arena.offsetWidth;
+  const arenaHeight = arena.offsetHeight;
+
+  let top = parseInt(mouse.style.top) || 0;
+  let left = parseInt(mouse.style.left) || 0;
+
+  if (e.key === 'w' || e.key === 'ArrowUp') {
+    top = Math.max(0, top - step);
+  } else if (e.key === 's' || e.key === 'ArrowDown') {
+    top = Math.min(arenaHeight - mouseSize, top + step);
+  } else if (e.key === 'a' || e.key === 'ArrowLeft') {
+    left = Math.max(0, left - step);
+  } else if (e.key === 'd' || e.key === 'ArrowRight') {
+    left = Math.min(arenaWidth - mouseSize, left + step);
+  }
+
+  mouse.style.top = top + 'px';
+  mouse.style.left = left + 'px';
 
   moveMouse();
 });
