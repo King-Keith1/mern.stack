@@ -1,3 +1,5 @@
+const jwt = require('jsonwebtoken');
+
 const {
   GraphQLObjectType,
   GraphQLSchema,
@@ -75,6 +77,23 @@ const Mutation = new GraphQLObjectType({
       resolve(parent, args) {
         const newScore = new Score(args);
         return newScore.save();
+      }
+    },
+    login: {
+      type: GraphQLString, // returns token
+      args: {
+        username: { type: new GraphQLNonNull(GraphQLString) },
+        password: { type: new GraphQLNonNull(GraphQLString) }
+      },
+      async resolve(_, { username, password }) {
+        const user = await User.findOne({ username });
+        if (!user || user.password !== password) {
+          throw new Error('Invalid credentials');
+        }
+        const token = jwt.sign({ id: user._id, username: user.username }, process.env.JWT_SECRET, {
+          expiresIn: '1h'
+        });
+        return token;
       }
     }
   }
