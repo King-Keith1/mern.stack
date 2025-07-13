@@ -11,21 +11,28 @@ document.addEventListener('DOMContentLoaded', () => {
   const mouseSize = 30;
 
   function register() {
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
 
-    fetch('http://localhost:3000/api/auth/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password })
+  fetch('http://localhost:3000/graphql', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      query: `
+        mutation {
+          register(username: "${username}", password: "${password}") {
+            username
+          }
+        }
+      `
     })
-      .then(res => res.json())
-      .then(data => {
-        console.log('Register Response:', data);
-        alert('Registered! Now log in.');
-      })
-      .catch(err => console.error('Register Error:', err));
-  }
+  })
+    .then(res => res.json())
+    .then(data => {
+      alert(`Registered ${data.data.register.username}`);
+    })
+    .catch(console.error);
+}
 
   function login() {
     const username = document.getElementById('username').value;
