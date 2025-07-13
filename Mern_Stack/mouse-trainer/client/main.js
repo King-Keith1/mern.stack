@@ -76,6 +76,13 @@ function startGame(diff) {
   }, 1000);
 }
 
+function moveMouse() {
+  const m = document.getElementById('mouse');
+  if (!m) return;
+  m.style.left = position.x + 'px';
+  m.style.top = position.y + 'px';
+}
+
 document.addEventListener('keydown', e => {
   const key = e.key?.toLowerCase?.();
   if (!key) return;
