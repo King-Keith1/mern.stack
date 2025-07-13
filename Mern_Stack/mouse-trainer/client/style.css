@@ -1,3 +1,23 @@
+/* Root Variables */
+:root {
+  --bg-dark: #0e0e10;
+  --neon-blue: #00ffff;
+  --neon-pink: #ff2cd7;
+  --cheese-yellow: #ffe600;
+  --accent-green: #32ff7e;
+  --text-light: #e0e0e0;
+}
+
+/* Base Styling */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-dark);
+  color: var(--text-light);
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Arena */
 #arena {
   width: 400px;
   height: 400px;
@@ -19,8 +39,10 @@
   border: 2px solid var(--neon-blue);
   box-shadow: 0 0 10px var(--neon-blue);
   border-radius: 12px;
+  margin: 40px auto;
 }
 
+/* Mouse */
 #mouse {
   width: 30px;
   height: 30px;
@@ -31,25 +53,6 @@
   top: 180px;
   left: 180px;
   box-shadow: 0 0 8px var(--neon-pink);
-}
-
-/* Root Vars */
-:root {
-  --bg-dark: #0e0e10;
-  --neon-blue: #00ffff;
-  --neon-pink: #ff2cd7;
-  --cheese-yellow: #ffe600;
-  --accent-green: #32ff7e;
-  --text-light: #e0e0e0;
-}
-
-/* Base Styling */
-body {
-  margin: 0;
-  padding: 0;
-  background-color: var(--bg-dark);
-  color: var(--text-light);
-  font-family: 'Poppins', sans-serif;
 }
 
 /* Buttons */
@@ -73,6 +76,7 @@ h1, h2 {
   font-family: 'Orbitron', sans-serif;
   color: var(--cheese-yellow);
   text-shadow: 0 0 5px var(--neon-blue);
+  text-align: center;
 }
 
 /* Input Fields */
@@ -82,6 +86,7 @@ input {
   color: var(--text-light);
   padding: 10px;
   border-radius: 6px;
+  margin-bottom: 10px;
 }
 
 /* Special UI - e.g. Jump message */
@@ -94,12 +99,25 @@ input {
   border-radius: 10px;
   color: #000;
   font-weight: bold;
+  font-family: 'Orbitron', sans-serif;
   box-shadow: 0 0 10px var(--neon-pink);
   animation: fadeOut 2s forwards;
+  z-index: 1000;
 }
 
 @keyframes fadeOut {
   0% { opacity: 1; }
   80% { opacity: 1; }
   100% { opacity: 0; transform: translateY(-10px); }
+}
+
+/* Keybind Guide */
+.keybinds {
+  position: relative;
+  margin-top: 10px;
+  text-align: center;
+  color: var(--neon-blue);
+  font-size: 14px;
+  font-family: 'Orbitron', sans-serif;
+  text-shadow: 0 0 4px var(--neon-blue);
 }
