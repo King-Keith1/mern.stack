@@ -113,6 +113,11 @@ document.addEventListener('keydown', e => {
   moveMouse();
 });
 
+function moveMouse() {
+  const m = document.getElementById('mouse');
+  m.style.left = position.x + 'px';
+  m.style.top = position.y + 'px';
+}
 
 function moveMouse() {
   const m = document.getElementById('mouse');
