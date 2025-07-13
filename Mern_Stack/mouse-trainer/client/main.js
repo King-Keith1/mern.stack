@@ -80,13 +80,17 @@ document.addEventListener('keydown', e => {
   const key = e.key?.toLowerCase?.();
   if (!key) return;
 
-  const m = document.getElementById('mouse');
   const msg = document.getElementById('message');
-  if (!m || !msg) return;
+  if (!msg) return;
 
-  // Filter keys based on difficulty
-  if (difficulty === 'easy' && !['w','a','s','d'].includes(key)) return;
-  if (difficulty === 'medium' && !['w','a','s','d',' '].includes(key)) return;
+  // Only allow movement keys depending on difficulty
+  const allowedKeys = {
+    easy: ['w', 'a', 's', 'd'],
+    medium: ['w', 'a', 's', 'd', ' '],
+    hard: ['w', 'a', 's', 'd', ' ', 'shift', 'control']
+  };
+
+  if (!allowedKeys[difficulty]?.includes(key)) return;
 
   // Update position based on key
   switch (key) {
@@ -100,10 +104,9 @@ document.addEventListener('keydown', e => {
     default: return;
   }
 
-  // Clamp position inside the arena
+  // Clamp movement inside arena bounds
   const arenaWidth = arena.offsetWidth;
   const arenaHeight = arena.offsetHeight;
-
   const maxX = arenaWidth - mouseSize;
   const maxY = arenaHeight - mouseSize;
 
@@ -112,12 +115,6 @@ document.addEventListener('keydown', e => {
 
   moveMouse();
 });
-
-function moveMouse() {
-  const m = document.getElementById('mouse');
-  m.style.left = position.x + 'px';
-  m.style.top = position.y + 'px';
-}
 
 function moveMouse() {
   const m = document.getElementById('mouse');
