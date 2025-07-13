@@ -76,12 +76,6 @@ function startGame(diff) {
   }, 1000);
 }
 
-const mouse = document.getElementById('mouse');
-const arena = document.getElementById('arena');
-
-const mouseSize = 30;
-const step = 10;
-
 document.addEventListener('keydown', e => {
   const key = e.key?.toLowerCase?.();
   if (!key) return;
@@ -90,9 +84,11 @@ document.addEventListener('keydown', e => {
   const msg = document.getElementById('message');
   if (!m || !msg) return;
 
+  // Filter keys based on difficulty
   if (difficulty === 'easy' && !['w','a','s','d'].includes(key)) return;
   if (difficulty === 'medium' && !['w','a','s','d',' '].includes(key)) return;
 
+  // Update position based on key
   switch (key) {
     case 'w': position.y -= speed; break;
     case 'a': position.x -= speed; break;
@@ -104,28 +100,19 @@ document.addEventListener('keydown', e => {
     default: return;
   }
 
-  const arenaRect = arena.getBoundingClientRect();
+  // Clamp position inside the arena
   const arenaWidth = arena.offsetWidth;
   const arenaHeight = arena.offsetHeight;
 
-  let top = parseInt(mouse.style.top) || 0;
-  let left = parseInt(mouse.style.left) || 0;
+  const maxX = arenaWidth - mouseSize;
+  const maxY = arenaHeight - mouseSize;
 
-  if (e.key === 'w' || e.key === 'ArrowUp') {
-    top = Math.max(0, top - step);
-  } else if (e.key === 's' || e.key === 'ArrowDown') {
-    top = Math.min(arenaHeight - mouseSize, top + step);
-  } else if (e.key === 'a' || e.key === 'ArrowLeft') {
-    left = Math.max(0, left - step);
-  } else if (e.key === 'd' || e.key === 'ArrowRight') {
-    left = Math.min(arenaWidth - mouseSize, left + step);
-  }
-
-  mouse.style.top = top + 'px';
-  mouse.style.left = left + 'px';
+  position.x = Math.max(0, Math.min(position.x, maxX));
+  position.y = Math.max(0, Math.min(position.y, maxY));
 
   moveMouse();
 });
+
 
 function moveMouse() {
   const m = document.getElementById('mouse');
