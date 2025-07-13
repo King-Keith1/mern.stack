@@ -24,10 +24,13 @@
 #mouse {
   width: 30px;
   height: 30px;
-  background: brown;
+  background: radial-gradient(circle, var(--cheese-yellow), #ccad00);
+  border: 2px solid var(--neon-pink);
+  border-radius: 50%;
   position: absolute;
   top: 180px;
   left: 180px;
+  box-shadow: 0 0 8px var(--neon-pink);
 }
 
 /* Root Vars */
