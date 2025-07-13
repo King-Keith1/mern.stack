@@ -1,18 +1,19 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-const cors = require('cors');
-require('dotenv').config();
+const { graphqlHTTP } = require('express-graphql');
+const schema = require('./schema');
 
 const app = express();
-app.use(cors());
-app.use(express.json());
 
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('MongoDB connected'))
-  .catch(err => console.log(err));
+  .catch(err => console.log('Mongo error', err));
 
-// Auth & Score Routes (you'll build next)
-app.use('/api/auth', require('./routes/auth'));
-app.use('/api/score', require('./routes/score'));
+app.use('/graphql', graphqlHTTP({
+  schema,
+  graphiql: true
+}));
 
-app.listen(3000, () => console.log('Server running on port 3000'));
+app.listen(3000, () => console.log('Server running on http://localhost:3000/graphql'));
+
