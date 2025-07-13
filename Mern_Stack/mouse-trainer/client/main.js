@@ -10,54 +10,68 @@ document.addEventListener('DOMContentLoaded', () => {
   const mouse = document.getElementById('mouse');
   const mouseSize = 30;
 
+  // ⏺️ REGISTER
   function register() {
-  const username = document.getElementById('username').value;
-  const password = document.getElementById('password').value;
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
 
-  fetch('http://localhost:3000/graphql', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      query: `
-        mutation {
-          register(username: "${username}", password: "${password}") {
-            username
+    fetch('http://localhost:3000/graphql', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        query: `
+          mutation {
+            register(username: "${username}", password: "${password}") {
+              username
+            }
           }
-        }
-      `
+        `
+      })
     })
-  })
     .then(res => res.json())
     .then(data => {
       alert(`Registered ${data.data.register.username}`);
     })
     .catch(console.error);
-}
+  }
 
+  // 🔐 LOGIN
   function login() {
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
 
-    fetch('http://localhost:3000/api/auth/login', {
+    fetch('http://localhost:3000/graphql', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password })
-    })
-      .then(async res => {
-        const data = await res.json();
-        console.log('Login Response:', data);
-        if (res.ok) {
-          token = data.token;
-          document.getElementById('auth').style.display = 'none';
-          document.getElementById('game').style.display = 'block';
-          loadLeaderboard();
-        } else {
-          alert(data.msg || 'Login failed');
-        }
+      body: JSON.stringify({
+        query: `
+          mutation {
+            login(username: "${username}", password: "${password}")
+          }
+        `
       })
-      .catch(err => console.error('Login Error:', err));
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.errors) {
+        alert(data.errors[0].message || 'Login failed');
+        return;
+      }
+
+      token = data.data.login;
+      console.log('Token:', token);
+
+      document.getElementById('auth').style.display = 'none';
+      document.getElementById('game').style.display = 'block';
+      loadLeaderboard();
+    })
+    .catch(err => {
+      console.error('Login error:', err);
+      alert('Login failed. Try again.');
+    });
   }
 
+  // ▶️ START GAME
   function startGame(diff) {
     difficulty = diff;
     position = { x: 180, y: 180 };
@@ -75,25 +89,38 @@ document.addEventListener('DOMContentLoaded', () => {
         clearInterval(timer);
         alert('Time’s up! Score submitted.');
 
-        fetch('http://localhost:3000/api/score', {
+        const username = document.getElementById('username').value;
+        const score = Math.floor(Math.random() * 200);
+
+        fetch('http://localhost:3000/graphql', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
           body: JSON.stringify({
-            username: document.getElementById('username').value,
-            score: Math.floor(Math.random() * 200),
-            difficulty
+            query: `
+              mutation {
+                addScore(username: "${username}", score: ${score}, difficulty: "${difficulty}") {
+                  username
+                  score
+                }
+              }
+            `
           })
         }).then(() => loadLeaderboard());
       }
     }, 1000);
   }
 
+  // 🐭 MOVE MOUSE
   function moveMouse() {
     if (!mouse) return;
     mouse.style.left = position.x + 'px';
     mouse.style.top = position.y + 'px';
   }
 
+  // ⌨️ HANDLE KEYBOARD INPUT
   document.addEventListener('keydown', e => {
     const key = e.key?.toLowerCase?.();
     if (!key || !arena || !mouse) return;
@@ -122,30 +149,45 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const maxX = arena.offsetWidth - mouseSize;
     const maxY = arena.offsetHeight - mouseSize;
-
     position.x = Math.max(0, Math.min(position.x, maxX));
     position.y = Math.max(0, Math.min(position.y, maxY));
 
     moveMouse();
   });
 
+  // 🏆 LOAD LEADERBOARD
   function loadLeaderboard() {
     const diff = document.getElementById('boardDiff')?.value || 'easy';
-    fetch(`http://localhost:3000/api/score/${diff}`)
-      .then(res => res.json())
-      .then(data => {
-        const list = document.getElementById('leaderboard');
-        if (!list) return;
-        list.innerHTML = '';
-        data.forEach((entry, i) => {
-          const item = document.createElement('li');
-          item.textContent = `#${i + 1} ${entry.username} — ${entry.score} pts`;
-          list.appendChild(item);
-        });
+
+    fetch('http://localhost:3000/graphql', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        query: `
+          query {
+            scores(difficulty: "${diff}") {
+              username
+              score
+            }
+          }
+        `
+      })
+    })
+    .then(res => res.json())
+    .then(data => {
+      const list = document.getElementById('leaderboard');
+      if (!list || !data.data) return;
+
+      list.innerHTML = '';
+      data.data.scores.forEach((entry, i) => {
+        const item = document.createElement('li');
+        item.textContent = `#${i + 1} ${entry.username} — ${entry.score} pts`;
+        list.appendChild(item);
       });
+    });
   }
 
-  // Expose login/register/startGame globally for button onclicks
+  // 🧠 MAKE FUNCTIONS GLOBAL FOR BUTTON ONCLICKS
   window.register = register;
   window.login = login;
   window.startGame = startGame;
