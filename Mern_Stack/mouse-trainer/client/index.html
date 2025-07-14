@@ -17,26 +17,26 @@
     </div>
 
     <div id="game" style="display:none;">
-        <h3 id="message">Press WASD to move</h3>
-        <div class="keybinds">
-        W = Forward | A = Left | S = Back | D = Right | Space = Jump | Shift = Dash
-        </div>
-        <div id="arena">
-            <div id="mouse"></div>
-        </div>
-        <p id="info"></p>
-        <button onclick="startGame('easy')">Easy</button>
-        <button onclick="startGame('medium')">Medium</button>
-        <button onclick="startGame('hard')">Hard</button>
-    </div>
-    <h4>Leaderboard</h4>
-    <select id="boardDiff" onchange="loadLeaderboard()">
-        <option value="easy">Easy</option>
-        <option value="medium">Medium</option>
-        <option value="hard">Hard</option>
-    </select>
-    <ul id="leaderboard"></ul>
+  <h3 id="message">Press WASD to move</h3>
+  <div class="keybinds">
+    W = Forward | A = Left | S = Back | D = Right | Space = Jump | Shift = Dash
+  </div>
+  <div id="arena">
+    <div id="mouse"></div>
+  </div>
+  <p id="info"></p>
+  <button onclick="startGame('easy')">Easy</button>
+  <button onclick="startGame('medium')">Medium</button>
+  <button onclick="startGame('hard')">Hard</button>
 
+  <h4>Leaderboard</h4>
+  <select id="boardDiff" onchange="loadLeaderboard()">
+      <option value="easy">Easy</option>
+      <option value="medium">Medium</option>
+      <option value="hard">Hard</option>
+  </select>
+  <ul id="leaderboard"></ul>
+</div>
 
     <script src="main.js"></script>
 </body>
