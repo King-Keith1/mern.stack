@@ -12,28 +12,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ⏺️ REGISTER
   function register() {
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
 
-    fetch('http://localhost:3000/graphql', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        query: `
-          mutation {
-            register(username: "${username}", password: "${password}") {
+  fetch('http://localhost:3000/graphql', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      query: `
+        mutation Register($username: String!, $password: String!) {
+          register(username: $username, password: $password) {
+            token
+            user {
               username
             }
           }
-        `
-      })
+        }
+      `,
+      variables: { username, password }
     })
-    .then(res => res.json())
-    .then(data => {
-      alert(`Registered ${data.data.register.username}`);
-    })
-    .catch(console.error);
-  }
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.errors) {
+      alert(data.errors[0].message || 'Register failed');
+      return;
+    }
+
+    token = data.data.register.token;
+    alert(`✅ Registered as ${data.data.register.user.username}`);
+    document.getElementById('auth').style.display = 'none';
+    document.getElementById('game').style.display = 'block';
+    loadLeaderboard();
+  })
+  .catch(console.error);
+}
 
   // 🔐 LOGIN
   function login() {
