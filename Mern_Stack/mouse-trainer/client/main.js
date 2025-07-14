@@ -50,39 +50,44 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 🔐 LOGIN
   function login() {
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
 
-    fetch('http://localhost:3000/graphql', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        query: `
-          mutation {
-            login(username: "${username}", password: "${password}")
+  fetch('http://localhost:3000/graphql', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      query: `
+        mutation Login($username: String!, $password: String!) {
+          login(username: $username, password: $password) {
+            token
+            user {
+              username
+            }
           }
-        `
-      })
+        }
+      `,
+      variables: { username, password }
     })
-    .then(res => res.json())
-    .then(data => {
-      if (data.errors) {
-        alert(data.errors[0].message || 'Login failed');
-        return;
-      }
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.errors) {
+      alert(data.errors[0].message || 'Login failed');
+      return;
+    }
 
-      token = data.data.login;
-      console.log('Token:', token);
-
-      document.getElementById('auth').style.display = 'none';
-      document.getElementById('game').style.display = 'block';
-      loadLeaderboard();
-    })
-    .catch(err => {
-      console.error('Login error:', err);
-      alert('Login failed. Try again.');
-    });
-  }
+    token = data.data.login.token;
+    alert(`✅ Logged in as ${data.data.login.user.username}`);
+    document.getElementById('auth').style.display = 'none';
+    document.getElementById('game').style.display = 'block';
+    loadLeaderboard();
+  })
+  .catch(err => {
+    console.error('Login error:', err);
+    alert('Login failed. Try again.');
+  });
+}
 
   // ▶️ START GAME
   function startGame(diff) {
