@@ -205,8 +205,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  function logout() {
+  token = '';
+  document.getElementById('auth').style.display = 'block';
+  document.getElementById('game').style.display = 'none';
+  }
+  
+
   // 🧠 MAKE FUNCTIONS GLOBAL FOR BUTTON ONCLICKS
   window.register = register;
   window.login = login;
   window.startGame = startGame;
+  window.logout = logout;
 });
